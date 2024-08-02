@@ -1,24 +1,36 @@
-# Descripción General
+# Project
+This Project was develop for deploy required infraestructure to set up a Docker Swarm Cluster on a Azure For Students Subscription
 
-En esta sección, encontraremos todos los archivos relacionados al desarrollo y la implementación de la infraestructura, la cual fué hecha con **Terraform.**
+### Limitations of Azure for Students
 
-*Cabe aclarar que todo el código de Terraform fue hecho con providers oficiales de Hashicorp.*
+This Subscription is limitated, so we can only deploy up to 4 VCPU's in one region and only three Public IP's per region.
+
+# General Info
+
+In this section, we will find all the files related to the development and implementation of the infrastructure, which was made with **Terraform.**
+
+*It should be noted that all Terraform Code was made with oficial Hashicorp Providers*
+
 
 [![Tech](https://skillicons.dev/icons?i=azure,terraform,bash,docker&perline=4)](https://skillicons.dev)
 
-# Infraestructura
-En el siguiente diagrama se encuentra representada la totalidad de la infraestructura que diseñamos en este proyecto. Ilustrando cada uno de los servicios implementados y como se relacionan entre sí. 
+# Infraestructure
+
+In the following diagram it is represented all the infraestructure that i designed in this project.
+It Represent each of the implemented services and how they relate to each other 
+
+
 
 <div align="center">
   <img src="./images/docker-swarm-cluster.jpg">
 </div>
 
 
-# Estructura 
+# Estructure
 
 | Archivo                                                                                                            | Descripción |
 |---------------------------------------------------------------------------------------------------------------------|-------------|
-|[providers.tf](providers.tf)                                                                                         |     En este archivo definimos el Cloud Provider (AWS) junto con todas sus configuraciones. Definimos que se use siempre una version >= que la version 5.36.0 y que toda la infraestrcutura desplegada será en us-east-1 (virgina). Además utilizamos tags dentro de la definición del provider para identificar todos los recursos que sean desplegados con **Terraform** para que no se mezclen junto con los recursos que no fueron desplegados por la herramienta de **IaC**.   |
+|[provider.tf](provider.tf)                                                                                         |     En este archivo definimos el Cloud Provider (Azure) junto con todas sus configuraciones. Definimos que se use siempre una version >= que la version 5.36.0 y que toda la infraestrcutura desplegada será en us-east-1 (virgina). Además utilizamos tags dentro de la definición del provider para identificar todos los recursos que sean desplegados con **Terraform** para que no se mezclen junto con los recursos que no fueron desplegados por la herramienta de **IaC**.   |
 |[backend.tf](backend.tf)                                                                                             |     **backend.tf** contiene la configuración del almacenamiento del archivo **terraform.tfstate**. El mismo se encuentra almacenado en un bucket de S3 dentro de la cuenta de AWS. Esto nos permite proteger de cierta manera el archivo de estado ante cualquier error. No solo eso, sino que tenerlo almacenado en un bucket de S3 nos permite colaborar y trabajar en armonía con multiples colaboradores.     |
 |[main.tf](main.tf)                                                                                                   |     Es el archivo principal en donde se encuentra la mayor parte del desarrollo de la infraestructura. Dentro de **main.tf** se encuentran todos los servicios que se utilizaron en esta solución. Cada servicio está desarrollado y configurado a partir de los módulos oficiales de **Terraform**.     |
 |[resources.tf](resources.tf)                                                                                         |     **resources.tf** contiene recursos de **Terraform** aislados para complementar a los módulos de **Terraform** que se encuentran en **main.tf**. Dentro de este archivo encontraremos los recursos para pushear la imágen de docker de la apliación hacia el **ACR**. Recursos para desplegar para poder configurar y desplegar el Target Group y el Listener del **NLB** los cuales son necesarios para relacionar el **NLB** con el **ASG**. También encontraremos todos los recursos que se encargan de la creación de políticas, roles, NSG´s y Resource Groups.     |
