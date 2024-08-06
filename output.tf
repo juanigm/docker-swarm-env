@@ -11,7 +11,13 @@ output "names" {
   value = [ for pip in azurerm_public_ip.public_ip: pip.name]
 }
 
+
 #terraform output -raw tls_private_key > secureadmin_id_rsa
+
+
+# output "test" {
+#   value = [for vnet in var.vnets: vnet.name]
+# }
 
 # output "test" {
 #   value = {for index, instance in var.instance_set: instance.name => instance}
