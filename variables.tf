@@ -36,37 +36,44 @@ variable "instance_set" {
     name  = string
     region  = string
     vnet = string
+    node-type = string
   }))
 
   default = [{
     name = "instance-1"
     region = "eastus"
     vnet = "vnet-1"
+    node-type = "main"
   }, 
   {
     name = "instance-2"
     region = "eastus"
     vnet = "vnet-1"
+    node-type = "worker"
   },
   {
     name = "instance-3"
     region = "eastus2"
     vnet = "vnet-2"
+    node-type = "manager"
   },
   {
     name = "instance-4"
     region = "eastus2"
     vnet = "vnet-2"
+    node-type = "worker"
   },
   {
     name = "instance-5"
     region = "westus2"
     vnet = "vnet-3"
+    node-type = "worker"
   },
   {
     name = "instance-6"
     region = "westus2"
     vnet = "vnet-3"
+    node-type = "worker"
   }
   ]
 }
