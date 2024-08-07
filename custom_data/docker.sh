@@ -24,8 +24,15 @@ installDocker() {
   sudo chmod 666 /var/run/docker.sock
 }
 
+installAzCopy(){
+  wget https://aka.ms/downloadazcopy-v10-linux
+  tar -xvf downloadazcopy-v10-linux
+  sudo cp ./azcopy_linux_amd64_*/azcopy /usr/bin/
+}
+
 main(){
   installDocker
+  installAzCopy
 }
 
 main
