@@ -21,6 +21,54 @@ resource "azurerm_subnet" "subnet" {
   address_prefixes     = each.value.subnet
 }
 
+resource "azurerm_storage_account" "sa" {
+  name                     = "storageswarmforcluster"
+  resource_group_name      = azurerm_resource_group.rg.name
+  location                 = azurerm_resource_group.rg.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
+resource "azurerm_storage_container" "container" {
+  name                  = "blob"
+  storage_account_name  = azurerm_storage_account.sa.name
+  container_access_type = "private"
+}
+
+data "azurerm_storage_account_sas" "terraform" {
+  connection_string = azurerm_storage_account.sa.primary_connection_string
+  https_only        = true
+  #signed_version    = "2021-06-08"
+  start  = "2024-01-01"
+  expiry = "2024-12-31"
+
+  resource_types {
+    service   = true
+    container = true
+    object    = true
+  }
+
+  services {
+    blob  = true
+    queue = true
+    table = false
+    file  = true
+  }
+
+  permissions {
+    read    = true
+    write   = true
+    delete  = true
+    list    = true
+    add     = true
+    create  = true
+    update  = true
+    process = true
+    tag     = false
+    filter  = false
+  }
+}
+
 resource "azurerm_public_ip" "public_ip" {
   for_each = {for instance in var.instance_set: instance.name => instance}
 
@@ -118,7 +166,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
 #This resource is to give the virtual machines time to install Docker, as if I don't allow them time, the execution happens before Docker is installed.
 resource "null_resource" "sleep" {
   provisioner "local-exec" {
-    command = "sleep 60"
+    command = "sleep 300"
   }
 
   depends_on = [ azurerm_linux_virtual_machine.vm ]
@@ -135,7 +183,7 @@ resource "null_resource" "test" {
   }
 
   provisioner "remote-exec" {
-     inline = each.value.node-type == "main" ? ["docker --version", "sudo docker swarm init --advertise-addr ${azurerm_network_interface.nic[each.key].private_ip_address}"] : each.value.node-type == "manager" ? ["docker --version", "echo soy manager y me voy a unir!"] : ["docker --version", "echo soy worker y me voy a unir"]
+     inline = each.value.node-type == "main" ? ["sudo docker swarm init --advertise-addr ${azurerm_network_interface.nic[each.key].private_ip_address}"] : each.value.node-type == "manager" ? ["echo im manager"] : ["echo im worker"]
   }
   
 
