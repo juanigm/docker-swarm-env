@@ -109,13 +109,36 @@ resource "azurerm_linux_virtual_machine" "vm" {
     version   = "latest"
   }
 
-  custom_data = filebase64("custom_data/docker.sh")
-
-  # provisioner "remote-exec" {
-  #   inline = [
-  #     "docker swarm init --advertise-addr ${}" 
-  #   ]
-  # }
+  custom_data = filebase64("custom_data/docker.sh")  
 
   depends_on =  [ azurerm_network_interface.nic ]
+}
+
+
+#This resource is to give the virtual machines time to install Docker, as if I don't allow them time, the execution happens before Docker is installed.
+resource "null_resource" "sleep" {
+  provisioner "local-exec" {
+    command = "sleep 60"
+  }
+
+  depends_on = [ azurerm_linux_virtual_machine.vm ]
+}
+
+resource "null_resource" "test" {
+
+  for_each = {for instance in var.instance_set: instance.name => instance}
+  connection {
+    type     = "ssh"
+    user     = "adminuser"
+    private_key = tls_private_key.secureadmin_ssh.private_key_openssh
+    host     = azurerm_linux_virtual_machine.vm[each.key].public_ip_address
+  }
+
+  provisioner "remote-exec" {
+     inline = each.value.node-type == "main" ? ["docker --version", "sudo docker swarm init --advertise-addr ${azurerm_network_interface.nic[each.key].private_ip_address}"] : each.value.node-type == "manager" ? ["docker --version", "echo soy manager y me voy a unir!"] : ["docker --version", "echo soy worker y me voy a unir"]
+  }
+  
+
+  depends_on = [ null_resource.sleep ]
+  
 }
