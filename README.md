@@ -37,7 +37,7 @@ It Represent each of the implemented services and how they relate to each other
 
 
 <div align="center">
-  <img src="./images/docker-swarm-cluster.jpg">
+  <img src="images/docker-swarm-cluster-final.drawio.png">
 </div>
 
 
@@ -109,4 +109,6 @@ Whit Default variables (6 vm's and 3 vnets in 3 different regions)
 
 If terraform apply was succesfull, when we connect to the **main vm** (Virtual Machine that initialize the **Docker Swarm** Cluster) and execute *docker node ls* we should see:
 
-![example](image.png)
+<div align="center">
+  <img src="images/image.png">
+</div>
