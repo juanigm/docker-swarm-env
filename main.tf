@@ -172,7 +172,7 @@ resource "null_resource" "sleep" {
   depends_on = [ azurerm_linux_virtual_machine.vm ]
 }
 
-resource "null_resource" "test" {
+resource "null_resource" "docker_swarm_up" {
 
   for_each = {for instance in var.instance_set: instance.name => instance}
   connection {
