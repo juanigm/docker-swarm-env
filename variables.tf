@@ -28,6 +28,15 @@ variable "vnets" {
     subnet = ["10.2.2.0/24"]
     nsg = "nsg-3"
   }]
+
+  description = <<EOF
+    Specifies one or more virtual networks that will be deployed 
+      name       - (Required) Name of Virtual Network
+      region     - (Required) The region where it will be deployed
+      vnet       - (Required) The vnet CIDR block
+      subnet     - (Required) The subnet that will be created into Virtual Network (Only one subnet per Vnet)
+      nsg        - (Required) The NSG that will be attached to the subnet
+  EOF
 }
 
 variable "instance_set" {
@@ -76,4 +85,15 @@ variable "instance_set" {
     node-type = "worker"
   }
   ]
+  description = <<EOF
+    Specifies one or more virtual machines
+      name       - (Required) Name of Virtual Machine
+      region     - (Required) The region where it will be deployed
+      vnet       - (Required) The vnet where it will be lived
+      node-type  - (Required) "Specify the role of the virtual machine within the Docker cluster. The values can be:
+
+                              Main: the virtual machine that will set up the Docker Swarm cluster
+                              Manager: the node(s) that will act as manager nodes
+                              Worker: the node(s) that will act as worker nodes
+  EOF
 }
