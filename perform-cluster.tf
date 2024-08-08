@@ -47,7 +47,7 @@ resource "null_resource" "upload_data" {
   }
   
 
-  depends_on = [ null_resource.test]
+  depends_on = [ null_resource.docker_swarm_up]
   
 }
 
