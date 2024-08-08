@@ -34,12 +34,15 @@ In this section, we will find all the files related to the development and imple
 In the following diagram it is represented all the infraestructure that i designed in this project.
 It Represent each of the implemented services and how they relate to each other 
 
-
+<!--📏LINE-->
+<img src="https://i.imgur.com/dBaSKWF.gif" height="20" width="100%">
 
 <div align="center">
-  <img src="images/docker-swarm-cluster-final.drawio.png">
+  <img src="images/docker-swarm-cluster--finality.drawio.png">
 </div>
 
+<!--📏LINE-->
+<img src="https://i.imgur.com/dBaSKWF.gif" height="20" width="100%">
 
 # Structure
 
