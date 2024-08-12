@@ -165,8 +165,13 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
 #This resource is to give the virtual machines time to install Docker, as if I don't allow them time, the execution happens before Docker is installed.
 resource "null_resource" "sleep" {
+
+  triggers = {
+    always_run = timestamp()
+  }
   provisioner "local-exec" {
-    command = "sleep 300"
+    
+    command = "sleep 240"
   }
 
   depends_on = [ azurerm_linux_virtual_machine.vm ]
@@ -185,7 +190,6 @@ resource "null_resource" "docker_swarm_up" {
   provisioner "remote-exec" {
      inline = each.value.node-type == "main" ? ["sudo docker swarm init --advertise-addr ${azurerm_network_interface.nic[each.key].private_ip_address}"] : each.value.node-type == "manager" ? ["echo im manager"] : ["echo im worker"]
   }
-  
 
   depends_on = [ null_resource.sleep ]
   
