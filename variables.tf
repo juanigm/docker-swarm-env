@@ -109,9 +109,4 @@ variable "instance_set" {
                               Worker: the node(s) that will act as worker nodes
   EOF
 }
-
-<<<<<<< HEAD
-#asdsadasdsa
-=======
-#some changess
->>>>>>> f5fdd02af98b4f039f3aa3bbaaba77432a5c04e7
+#asd
