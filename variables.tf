@@ -83,6 +83,18 @@ variable "instance_set" {
     region = "westus2"
     vnet = "vnet-3"
     node-type = "worker"
+  },
+  {
+    name = "instance-7"
+    region = "eastus2"
+    vnet = "vnet-2"
+    node-type = "manager"
+  },
+  {
+    name = "instance-8"
+    region = "eastus"
+    vnet = "vnet-1"
+    node-type = "worker"
   }
   ]
   description = <<EOF
